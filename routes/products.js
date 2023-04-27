@@ -7,7 +7,7 @@ const router = require("express").Router();
 //CREATE
 
 router.post("/", isAdmin, async (req, res) => {
-  const { name, brand, desc, price, image } = req.body;
+  const { name, brand, desc, price, image, shop } = req.body;
 
   try {
     if (image) {
@@ -18,10 +18,13 @@ router.post("/", isAdmin, async (req, res) => {
       if (uploadedResponse) {
         const product = new Product({
           name,
-          brand,
+          brand: parseInt(brand),
+          shop: parseInt(shop),
           desc,
           price,
-          image: uploadedResponse,
+          image: uploadedResponse.url ?? "",
+          createdAt: new Date(),
+          sold: 0,
         });
 
         const savedProduct = await product.save();
@@ -47,8 +50,8 @@ router.delete("/:id", isAdmin, async (req, res) => {
 
 //GET ALL PRODUCTS
 
-router.get("/", async (req, res) => {
-  const qbrand = req.query.brand;
+router.get("/brand", async (req, res) => {
+  const qbrand = req.query.id;
   try {
     let products;
 
@@ -59,6 +62,37 @@ router.get("/", async (req, res) => {
     } else {
       products = await Product.find();
     }
+
+    res.status(200).send(products);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+router.get("/shop", async (req, res) => {
+  const qShop = req.query.id;
+  try {
+    let products;
+
+    if (qShop) {
+      products = await Product.find({
+        shop: qShop,
+      });
+    } else {
+      products = await Product.find();
+    }
+
+    res.status(200).send(products);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+router.get("/", async (req, res) => {
+  try {
+    let products;
+
+    products = await Product.find();
 
     res.status(200).send(products);
   } catch (error) {

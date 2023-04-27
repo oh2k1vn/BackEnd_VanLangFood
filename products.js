@@ -28,4 +28,11 @@ const products = [
   },
 ];
 
+const brands = [
+  {
+    id: 1,
+    name: "Trà Sữa",
+  },
+];
+
 module.exports = products;
