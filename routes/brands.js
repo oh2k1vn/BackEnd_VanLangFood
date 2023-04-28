@@ -1,10 +1,10 @@
-const shops = require("../data/shops");
+const brands = require("../data/brands");
 
 const router = require("express").Router();
 
 router.get("/", async (req, res) => {
   try {
-    res.status(200).send(shops);
+    res.status(200).send(brands);
   } catch (error) {
     res.status(500).send(error);
   }

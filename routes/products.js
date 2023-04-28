@@ -1,12 +1,10 @@
 const { Product } = require("../models/Product");
-const { auth, isUser, isAdmin } = require("../middleware/auth");
+const { auth, isUser, isShop, isAdmin } = require("../middleware/auth");
 const cloudinary = require("../utils/cloudinary");
 
 const router = require("express").Router();
 
-//CREATE
-
-router.post("/", isAdmin, async (req, res) => {
+router.post("/", isShop, async (req, res) => {
   const { name, brand, desc, price, image, shop } = req.body;
 
   try {
@@ -23,32 +21,43 @@ router.post("/", isAdmin, async (req, res) => {
           desc,
           price,
           image: uploadedResponse.url ?? "",
-          createdAt: new Date(),
           sold: 0,
         });
 
         const savedProduct = await product.save();
-        res.status(200).send(savedProduct);
+        res.status(200).send({
+          success: true,
+          result: savedProduct,
+          message: "Create success"
+        });
       }
     }
   } catch (error) {
     console.log(error);
-    res.status(500).send(error);
+    res.status(500).send({
+      success: false,
+      result: null,
+      message: err.message
+    });
   }
 });
 
-//DELETE
-
-router.delete("/:id", isAdmin, async (req, res) => {
+router.delete("/:id", isShop, async (req, res) => {
   try {
     await Product.findByIdAndDelete(req.params.id);
-    res.status(200).send("Product has been deleted...");
+    res.status(200).send({
+      success: true,
+      result: true,
+      message: "Product has been deleted..."
+    });
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).send({
+      success: false,
+      result: null,
+      message: err.message
+    });
   }
 });
-
-//GET ALL PRODUCTS
 
 router.get("/brand", async (req, res) => {
   const qbrand = req.query.id;
@@ -63,9 +72,17 @@ router.get("/brand", async (req, res) => {
       products = await Product.find();
     }
 
-    res.status(200).send(products);
+    res.status(200).send({
+      success: true,
+      result: products,
+      message: "Getlist success"
+    });
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).send({
+      success: false,
+      result: null,
+      message: err.message
+    });
   }
 });
 
@@ -82,9 +99,17 @@ router.get("/shop", async (req, res) => {
       products = await Product.find();
     }
 
-    res.status(200).send(products);
+    res.status(200).send({
+      success: true,
+      result: products,
+      message: "Getlist success"
+    });
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).send({
+      success: false,
+      result: null,
+      message: err.message
+    });
   }
 });
 
@@ -94,26 +119,38 @@ router.get("/", async (req, res) => {
 
     products = await Product.find();
 
-    res.status(200).send(products);
+    res.status(200).send({
+      success: true,
+      result: products,
+      message: "Getlist success"
+    });
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).send({
+      success: false,
+      result: null,
+      message: err.message
+    });
   }
 });
-
-//GET PRODUCT
 
 router.get("/find/:id", async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
-    res.status(200).send(product);
+    res.status(200).send({
+      success: true,
+      result: product,
+      message: "Find success"
+    });
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).send({
+      success: false,
+      result: null,
+      message: err.message
+    });
   }
 });
 
-//UPDATE
-
-router.put("/:id", isAdmin, async (req, res) => {
+router.put("/:id", isShop, async (req, res) => {
   try {
     const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
@@ -122,9 +159,17 @@ router.put("/:id", isAdmin, async (req, res) => {
       },
       { new: true }
     );
-    res.status(200).send(updatedProduct);
+    res.status(200).send({
+      success: true,
+      result: updatedProduct,
+      message: "Update success"
+    });
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).send({
+      success: false,
+      result: null,
+      message: err.message
+    });
   }
 });
 

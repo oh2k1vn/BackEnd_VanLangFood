@@ -3,14 +3,14 @@ const mongoose = require("mongoose");
 const orderSchema = new mongoose.Schema(
   {
     userId: { type: String, required: true },
+    shop: { type: Number, required: true, default: 0 },
     products: [
       { productId: { type: String }, quantity: { type: Number, default: 1 } },
     ],
-    subtotal: { type: Number, required: true },
     total: { type: Number, required: true },
     shipping: { type: Object, required: true },
-    delivery_status: { type: String, default: "pending" },
-    payment_status: { type: String, required: true },
+    deliveryStatus: { type: String, default: "pending" },
+    paymentMethod: { type: String, required: true },
   },
   { timestamps: true }
 );
