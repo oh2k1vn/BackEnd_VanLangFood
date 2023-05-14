@@ -1,6 +1,6 @@
 const brands = {
-  "success": true,
-  "result": [
+  success: true,
+  result: [
     {
       id: 1,
       name: "Trà Sữa",
@@ -13,7 +13,19 @@ const brands = {
       id: 3,
       name: "Đồ ăn vặt",
     },
-  ]
+    {
+      id: 4,
+      name: "Súp cua",
+    },
+    {
+      id: 5,
+      name: "Bánh mỳ",
+    },
+    {
+      id: 6,
+      name: "Mì lẩu thái",
+    },
+  ],
 };
 
 module.exports = brands;

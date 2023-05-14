@@ -1,19 +1,19 @@
-const shops = {
+const brands = {
   "success": true,
   "result": [
     {
       id: 1,
-      name: "Quán chú 2",
+      name: "Quán trà sữa topping",
     },
     {
       id: 2,
-      name: "Trà sữa mộc",
+      name: "Quán cơm heo thì",
     },
     {
       id: 3,
-      name: "Quán 69",
+      name: "Quán ăn vặt sv",
     },
   ]
 };
 
-module.exports = shops;
+module.exports = brands;
