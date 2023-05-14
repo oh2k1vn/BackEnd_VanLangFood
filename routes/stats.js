@@ -1,6 +1,6 @@
-const { Order } = require("../models/Order");
+const { Order } = require("../models/order");
 const { auth, isUser, isShop, isShopAdmin } = require("../middleware/auth");
-const { Product } = require("../models/Product");
+const { Product } = require("../models/product");
 
 const router = require("express").Router();
 
