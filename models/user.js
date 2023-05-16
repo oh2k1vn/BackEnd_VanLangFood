@@ -14,6 +14,7 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true, minlength: 3, maxlength: 1024 },
     role: { type: String, default: 'user' },
     avatar: { type: String, default: 'https://res.cloudinary.com/dcnzwz9sp/image/upload/v1682647020/admin_osba81.png', require: false },
+    token: { type: String, default: '' },
   },
   { timestamps: true }
 );

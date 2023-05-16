@@ -10,6 +10,7 @@ const shopsRoute = require("./routes/shops");
 const brandsRoute = require("./routes/brands");
 const statsRoute = require("./routes/stats");
 const ratingRoute = require("./routes/rating");
+const profileRoute = require("./routes/profile");
 
 const app = express();
 require("dotenv").config();
@@ -27,6 +28,7 @@ app.use("/api/shops", shopsRoute);
 app.use("/api/brands", brandsRoute);
 app.use("/api/stats", statsRoute);
 app.use("/api/rating", ratingRoute);
+app.use("/api/profile", profileRoute);
 
 app.get("/", (req, res) => {
   res.send("Welcome our to online shop API...");

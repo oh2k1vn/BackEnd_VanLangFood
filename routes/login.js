@@ -34,6 +34,17 @@ router.post("/", async (req, res) => {
     });
 
   const token = generateAuthToken(user);
+
+  user = await User.findByIdAndUpdate(
+    { _id: user._id },
+    {
+      $set: {
+        token: token
+      }
+    },
+    { new: true }
+  );
+
   res.send({
     success: true,
     result: user,
