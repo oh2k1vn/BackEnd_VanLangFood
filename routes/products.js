@@ -8,6 +8,13 @@ router.post("/", isShop, async (req, res) => {
   const { name, brand, desc, price, image, shop } = req.body;
 
   try {
+    if (!image) {
+      res.status(200).send({
+        success: false,
+        result: null,
+        message: "Image null"
+      });
+    }
     if (image) {
       const uploadedResponse = await cloudinary.uploader.upload(image, {
         upload_preset: "ml_default",

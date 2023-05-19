@@ -8,8 +8,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       minlength: 3,
-      maxlength: 200,
-      unique: true,
+      maxlength: 200
     },
     password: { type: String, required: true, minlength: 3, maxlength: 1024 },
     role: { type: String, default: 'user' },

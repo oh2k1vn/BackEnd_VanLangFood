@@ -1,8 +1,6 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const register = require("./routes/register");
-const login = require("./routes/login");
 const ordersRoute = require("./routes/orders");
 const stripe = require("./routes/stripe");
 const productsRoute = require("./routes/products");
@@ -10,17 +8,14 @@ const shopsRoute = require("./routes/shops");
 const brandsRoute = require("./routes/brands");
 const statsRoute = require("./routes/stats");
 const ratingRoute = require("./routes/rating");
-const profileRoute = require("./routes/profile");
+const userRoute = require("./routes/user");
 
 const app = express();
 require("dotenv").config();
 
-
 app.use(express.json());
 app.use(cors());
 
-app.use("/api/register", register);
-app.use("/api/login", login);
 app.use("/api/orders", ordersRoute);
 app.use("/api/stripe", stripe);
 app.use("/api/products", productsRoute);
@@ -28,7 +23,7 @@ app.use("/api/shops", shopsRoute);
 app.use("/api/brands", brandsRoute);
 app.use("/api/stats", statsRoute);
 app.use("/api/rating", ratingRoute);
-app.use("/api/profile", profileRoute);
+app.use("/api/user", userRoute);
 
 app.get("/", (req, res) => {
   res.send("Welcome our to online shop API...");
