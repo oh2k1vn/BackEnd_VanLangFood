@@ -1,0 +1,50 @@
+version: '3.1'
+services:
+
+  food-backend:
+    container_name: vlfood_backend
+    hostname: vlfood_backend
+    image: registry.gitlab.com/b698/vanlanggo/vanlanggo-backend/vanlangfood:latest
+    env_file:
+      - .env
+    tty: true
+    ports:
+      - 5000:5000
+    # volumes:
+    #   - ./files/:/usr/vlgo/gateway/files/:rw
+    depends_on:
+      - food-mongodb
+    networks:
+      - host
+      - internalService
+      - share_stack
+
+  food-mongodb:
+    container_name: vlfood_mongodb
+    hostname: ${FOOD_MONGODB_HOST}
+    image: mongo:4.4.6
+    env_file:
+      - .env
+    ports:
+      - 27020:27017
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${FOOD_MONGODB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${FOOD_MONGODB_PASSWORD}
+    volumes:
+      - food_mongodb_data:/data/db:rw
+    networks:
+      - internalService
+      - host
+
+
+volumes:
+  food_mongodb_data: 
+
+networks:
+  host:
+    driver: bridge
+  internalService:
+    internal: true
+  share_stack:
+    external: true

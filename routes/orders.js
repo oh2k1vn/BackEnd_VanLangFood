@@ -1,4 +1,5 @@
-const { Order} = require("../models/order")
+const { Order } = require("../models/order")
+const { Product } = require("../models/product")
 const { auth, isUser, isShop, isShopAdmin } = require("../middleware/auth");
 
 const router = require("express").Router();
@@ -59,7 +60,7 @@ router.delete("/:id", isShopAdmin, async (req, res) => {
 
 router.post("/getByQuery", isShopAdmin, async (req, res) => {
   try {
-    const orders = await Order.find(req.body);
+    const orders = await Order.find(req.body).populate("user").populate("products.product");
     res.status(200).send({
       success: true,
       result: orders,
@@ -76,7 +77,8 @@ router.post("/getByQuery", isShopAdmin, async (req, res) => {
 
 router.get("/", isShopAdmin, async (req, res) => {
   try {
-    const orders = await Order.find();
+    const orders = await Order.find().populate("user").populate("products.product");;
+
     res.status(200).send({
       success: true,
       result: orders,

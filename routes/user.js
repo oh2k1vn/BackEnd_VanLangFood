@@ -5,7 +5,10 @@ const express = require("express");
 const generateAuthToken = require("../utils/generateAuthToken");
 const { default: mongoose } = require("mongoose");
 const cloudinary = require("../utils/cloudinary");
+const path = require('path');
+const fs = require('fs');
 const router = express.Router();
+const { auth, isUser, isShop, isShopAdmin } = require("../middleware/auth");
 
 router.post("/", async (req, res) => {
   const schema = Joi.object({
@@ -53,27 +56,33 @@ router.put("/", async (req, res) => {
     });
   }
 
-  let uploadedResponse = null;
-  if (avatar) {
-    uploadedResponse = await cloudinary.uploader.upload(avatar, {
-      upload_preset: "ml_default",
-    });
-  }
+  let uploadedResponse = {};
+  let result = {};
+  try {
 
-  const result = await User.findOneAndUpdate(
-    { _id: new mongoose.mongo.ObjectId(id) },
-    {
-      name: name ?? user.name,
-      avatar: uploadedResponse.url ?? user.avatar,
+    if (avatar) {
+      uploadedResponse = await cloudinary.uploader.upload(avatar, {
+        upload_preset: "ml_default",
+      });
     }
-  );
 
-  if (!result) {
-    return res.status(400).send({
-      success: false,
-      result: null,
-      message: "Update fail"
-    });
+    result = await User.findOneAndUpdate(
+      { _id: new mongoose.mongo.ObjectId(id) },
+      {
+        name: name ?? user.name,
+        avatar: uploadedResponse?.url ?? user.avatar,
+      }
+    );
+
+    if (!result) {
+      return res.status(400).send({
+        success: false,
+        result: null,
+        message: "Update fail"
+      });
+    }
+  } catch (error) {
+    console.log(error);
   }
 
   res.send({
@@ -163,5 +172,22 @@ router.post("/profile", async (req, res) => {
   });
 });
 
+
+router.post("/getByQuery", isShopAdmin, async (req, res) => {
+  try {
+    const users = await User.find(req.body);
+    res.status(200).send({
+      success: true,
+      result: users,
+      message: "Getlist success"
+    });
+  } catch (err) {
+    res.status(500).send({
+      success: false,
+      result: null,
+      message: err.message
+    });
+  }
+});
 
 module.exports = router;
