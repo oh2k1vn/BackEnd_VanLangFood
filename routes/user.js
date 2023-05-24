@@ -8,7 +8,7 @@ const cloudinary = require("../utils/cloudinary");
 const path = require('path');
 const fs = require('fs');
 const router = express.Router();
-const { auth, isUser, isShop, isShopAdmin } = require("../middleware/auth");
+const { auth, isUser, isShop, isShopAdmin, isAdmin } = require("../middleware/auth");
 
 router.post("/", async (req, res) => {
   const schema = Joi.object({
@@ -71,6 +71,47 @@ router.put("/", async (req, res) => {
       {
         name: name ?? user.name,
         avatar: uploadedResponse?.url ?? user.avatar,
+      }
+    );
+
+    if (!result) {
+      return res.status(400).send({
+        success: false,
+        result: null,
+        message: "Update fail"
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+
+  res.send({
+    success: true,
+    result: result,
+    message: "Update success"
+  });
+});
+
+router.put("/account", isAdmin, async (req, res) => {
+  const { role, isActive, shop, id } = req.body;
+
+  let user = await User.findById(id);
+  if (!user) {
+    return res.status(400).send({
+      success: false,
+      result: null,
+      message: "User not exists..."
+    });
+  }
+
+  let result = {};
+  try {
+    result = await User.findOneAndUpdate(
+      { _id: new mongoose.mongo.ObjectId(id) },
+      {
+        role: role ?? user.role,
+        isActive: isActive,
+        shop: shop
       }
     );
 
