@@ -12,11 +12,11 @@ router.post("/", auth, async (req, res) => {
       result: savedRating,
       message: "Create rating success"
     });
-  } catch (err) {
+  } catch (error) {
     res.status(500).send({
       success: false,
       result: null,
-      message: err.message
+      message: error.message
     });
   }
 });
@@ -29,11 +29,11 @@ router.post("/getByQuery", auth, async (req, res) => {
       result: ratings,
       message: "Getlist success"
     });
-  } catch (err) {
+  } catch (error) {
     res.status(500).send({
       success: false,
       result: null,
-      message: err.message
+      message: error.message
     });
   }
 });

@@ -222,11 +222,11 @@ router.post("/getByQuery", isShopAdmin, async (req, res) => {
       result: users,
       message: "Getlist success"
     });
-  } catch (err) {
+  } catch (error) {
     res.status(500).send({
       success: false,
       result: null,
-      message: err.message
+      message: error.message
     });
   }
 });

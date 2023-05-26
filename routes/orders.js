@@ -13,11 +13,11 @@ router.post("/", auth, async (req, res) => {
       result: savedOrder,
       message: "Create order success"
     });
-  } catch (err) {
+  } catch (error) {
     res.status(500).send({
       success: false,
       result: null,
-      message: err.message
+      message: error.message
     });
   }
 });
@@ -36,11 +36,11 @@ router.put("/:id", isShopAdmin, async (req, res) => {
       result: updatedOrder,
       message: "Update order success"
     });
-  } catch (err) {
+  } catch (error) {
     res.status(500).send({
       success: false,
       result: null,
-      message: err.message
+      message: error.message
     });
   }
 });
@@ -49,11 +49,11 @@ router.delete("/:id", isShopAdmin, async (req, res) => {
   try {
     await Order.findByIdAndDelete(req.params.id);
     res.status(200).send("Order has been deleted...");
-  } catch (err) {
+  } catch (error) {
     res.status(500).send({
       success: false,
       result: null,
-      message: err.message
+      message: error.message
     });
   }
 });
@@ -66,11 +66,11 @@ router.post("/getByQuery", isShopAdmin, async (req, res) => {
       result: orders,
       message: "Getlist success"
     });
-  } catch (err) {
+  } catch (error) {
     res.status(500).send({
       success: false,
       result: null,
-      message: err.message
+      message: error.message
     });
   }
 });
@@ -84,11 +84,11 @@ router.get("/", isShopAdmin, async (req, res) => {
       result: orders,
       message: "Getlist success"
     });
-  } catch (err) {
+  } catch (error) {
     res.status(500).send({
       success: false,
       result: null,
-      message: err.message
+      message: error.message
     });
   }
 });

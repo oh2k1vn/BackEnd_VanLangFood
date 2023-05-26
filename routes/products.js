@@ -1,10 +1,10 @@
 const { Product } = require("../models/product");
-const { auth, isUser, isShop, isAdmin } = require("../middleware/auth");
+const { auth, isUser, isShop, isAdmin, isShopAdmin } = require("../middleware/auth");
 const cloudinary = require("../utils/cloudinary");
 
 const router = require("express").Router();
 
-router.post("/", isShop, async (req, res) => {
+router.post("/", isShopAdmin, async (req, res) => {
   const { name, brand, desc, price, image, shop } = req.body;
 
   try {
@@ -44,12 +44,12 @@ router.post("/", isShop, async (req, res) => {
     res.status(500).send({
       success: false,
       result: null,
-      message: err.message
+      message: error.message
     });
   }
 });
 
-router.delete("/:id", isShop, async (req, res) => {
+router.delete("/:id", isShopAdmin, async (req, res) => {
   try {
     await Product.findByIdAndDelete(req.params.id);
     res.status(200).send({
@@ -61,22 +61,33 @@ router.delete("/:id", isShop, async (req, res) => {
     res.status(500).send({
       success: false,
       result: null,
-      message: err.message
+      message: error.message
     });
   }
 });
 
-router.get("/brand", async (req, res) => {
-  const qbrand = req.query.id;
+router.post("/getByQuery", async (req, res) => {
   try {
+    const { from, size, shop, brand } = req.body;
     let products;
 
-    if (qbrand) {
-      products = await Product.find({
-        brand: qbrand,
-      });
-    } else {
+    if (!from && !size && !shop && !brand) {
       products = await Product.find();
+    } else {
+      const query = Product.find();
+      if (from) {
+        query.skip(Number(from));
+      }
+      if (size) {
+        query.limit(Number(size));
+      }
+      if (shop) {
+        query.where('shop').equals(Number(shop));
+      }
+      if (brand) {
+        query.where('brand').equals(Number(brand));
+      }
+      products = await query.exec();
     }
 
     res.status(200).send({
@@ -88,54 +99,7 @@ router.get("/brand", async (req, res) => {
     res.status(500).send({
       success: false,
       result: null,
-      message: err.message
-    });
-  }
-});
-
-router.get("/shop", async (req, res) => {
-  const qShop = req.query.id;
-  try {
-    let products;
-
-    if (qShop) {
-      products = await Product.find({
-        shop: qShop,
-      });
-    } else {
-      products = await Product.find();
-    }
-
-    res.status(200).send({
-      success: true,
-      result: products,
-      message: "Getlist success"
-    });
-  } catch (error) {
-    res.status(500).send({
-      success: false,
-      result: null,
-      message: err.message
-    });
-  }
-});
-
-router.get("/", async (req, res) => {
-  try {
-    let products;
-
-    products = await Product.find();
-
-    res.status(200).send({
-      success: true,
-      result: products,
-      message: "Getlist success"
-    });
-  } catch (error) {
-    res.status(500).send({
-      success: false,
-      result: null,
-      message: err.message
+      message: error.message
     });
   }
 });
@@ -152,7 +116,7 @@ router.get("/find/:id", async (req, res) => {
     res.status(500).send({
       success: false,
       result: null,
-      message: err.message
+      message: error.message
     });
   }
 });
@@ -175,7 +139,7 @@ router.put("/:id", isShop, async (req, res) => {
     res.status(500).send({
       success: false,
       result: null,
-      message: err.message
+      message: error.message
     });
   }
 });

@@ -123,8 +123,8 @@ const createOrder = async (customer, data) => {
   try {
     const savedOrder = await newOrder.save();
     console.log("Processed Order:", savedOrder);
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -152,8 +152,8 @@ router.post(
           signature,
           webhookSecret
         );
-      } catch (err) {
-        console.log(`⚠️  Webhook signature verification failed:  ${err}`);
+      } catch (error) {
+        console.log(`⚠️  Webhook signature verification failed:  ${error}`);
         return res.sendStatus(400);
       }
       // Extract the object from the event.
@@ -174,12 +174,12 @@ router.post(
           try {
             // CREATE ORDER
             createOrder(customer, data);
-          } catch (err) {
+          } catch (error) {
             console.log(typeof createOrder);
-            console.log(err);
+            console.log(error);
           }
         })
-        .catch((err) => console.log(err.message));
+        .catch((error) => console.log(error.message));
     }
 
     res.status(200).end();
