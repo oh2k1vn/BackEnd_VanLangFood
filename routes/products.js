@@ -121,7 +121,7 @@ router.get("/find/:id", async (req, res) => {
   }
 });
 
-router.put("/:id", isShop, async (req, res) => {
+router.put("/:id", isShopAdmin, async (req, res) => {
   try {
     const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
