@@ -27,7 +27,7 @@ router.post("/", isShopAdmin, async (req, res) => {
           shop: parseInt(shop),
           desc,
           price,
-          image: uploadedResponse.url ?? "",
+          image: uploadedResponse?.url ?? "",
           sold: 0,
         });
 
