@@ -58,7 +58,7 @@ router.delete("/:id", isShopAdmin, async (req, res) => {
   }
 });
 
-router.post("/getByQuery", isShopAdmin, async (req, res) => {
+router.post("/getByQuery", auth, async (req, res) => {
   try {
     const orders = await Order.find(req.body).populate("user").populate("products.product");
     res.status(200).send({
