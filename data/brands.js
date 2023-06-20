@@ -25,9 +25,14 @@ const brands = {
       id: 6,
       name: "Mì lẩu thái",
     },
+
     {
       id: 7,
       name: "Khác",
+    },
+    {
+      id: 8,
+      name: "Hamburger",
     },
   ],
 };
