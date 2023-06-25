@@ -93,7 +93,7 @@ router.put("/", async (req, res) => {
 });
 
 router.put("/account", isAdmin, async (req, res) => {
-  const { role, isActive, shop, id } = req.body;
+  const { role, isActive, shop, id, tokenFCM } = req.body;
 
   let user = await User.findById(id);
   if (!user) {
@@ -111,7 +111,8 @@ router.put("/account", isAdmin, async (req, res) => {
       {
         role: role ?? user.role,
         isActive: isActive,
-        shop: shop
+        shop: shop,
+        tokenFCM: tokenFCM
       }
     );
 

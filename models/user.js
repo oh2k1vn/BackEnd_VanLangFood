@@ -16,6 +16,7 @@ const userSchema = new mongoose.Schema(
     shop: { type: String, default: "" },
     avatar: { type: String, default: 'https://res.cloudinary.com/dcnzwz9sp/image/upload/v1682647020/admin_osba81.png', require: false },
     token: { type: String, default: '' },
+    tokenFCM: { type: String, default: '' },
   },
   { timestamps: true }
 );
