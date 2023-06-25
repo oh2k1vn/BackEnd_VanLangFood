@@ -1,30 +1,36 @@
 const express = require("express");
 const admin = require("firebase-admin");
+const functions = require("firebase-functions");
 
 const router = express.Router();
 
 // Định nghĩa endpoint để gửi push notification
 router.post("/send-notification", (req, res) => {
-  const registrationToken = req.body.token;
-  const message = {
-    notification: {
-      title: "Tiêu đề thông báo",
-      body: "Nội dung thông báo",
+  const { token, data } = req.body;
+  const { noti_type, title, body, image, priority } = data;
+
+  const messagePayload = {
+    token,
+    data: {
+      noti_type,
+      title,
+      body,
+      image,
+      priority,
     },
-    token: registrationToken,
   };
 
   // Gửi thông báo
   admin
     .messaging()
-    .send(message)
+    .send(messagePayload)
     .then((response) => {
-      console.log("Thành công:", response);
-      res.status(200).send("Thành công");
+      console.log("Successfully sent notification:", response);
+      res.status(200).json({ message: "Notification sent successfully" });
     })
     .catch((error) => {
-      console.log("Lỗi:", error);
-      res.status(500).send("Lỗi");
+      console.log("Error sending notification:", error);
+      res.status(500).json({ error: "Failed to send notification" });
     });
 });
 

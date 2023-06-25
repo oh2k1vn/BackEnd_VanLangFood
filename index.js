@@ -12,6 +12,7 @@ const userRoute = require("./routes/user");
 const notificationRouter = require("./routes/notification");
 const admin = require("firebase-admin");
 
+
 // Khởi tạo ứng dụng Firebase Admin
 const serviceAccount = require("./config/serviceAccountKey.json");
 admin.initializeApp({

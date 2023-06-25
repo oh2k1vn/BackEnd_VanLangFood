@@ -1,4 +1,4 @@
-const brands = {
+const shops = {
   success: true,
   result: [
     {
@@ -94,4 +94,4 @@ const brands = {
   ],
 };
 
-module.exports = brands;
+module.exports = shops;
