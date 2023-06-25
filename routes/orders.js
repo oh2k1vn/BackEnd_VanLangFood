@@ -6,6 +6,21 @@ const router = require("express").Router();
 
 router.post("/", auth, async (req, res) => {
   try {
+    const { products } = req.body;
+    if (products && products.length) {
+      const updatePromises = products.map(async (item) => {
+        const { product, quantity } = item;
+        const updatedProduct = await Product.findByIdAndUpdate(
+          product,
+          {
+            $inc: { sold: quantity } // Increment the "sold" field by the quantity
+          },
+          { new: true }
+        );
+        return updatedProduct;
+      });
+    }
+
     const newOrder = new Order(req.body);
     const savedOrder = await newOrder.save();
     res.status(200).send({
@@ -13,7 +28,9 @@ router.post("/", auth, async (req, res) => {
       result: savedOrder,
       message: "Create order success"
     });
+
   } catch (error) {
+    console.log("🚀  file: orders.js:33  router.post  error", error)
     res.status(500).send({
       success: false,
       result: null,
