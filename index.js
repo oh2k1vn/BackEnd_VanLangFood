@@ -9,6 +9,7 @@ const brandsRoute = require("./routes/brands");
 const statsRoute = require("./routes/stats");
 const ratingRoute = require("./routes/rating");
 const userRoute = require("./routes/user");
+const fcmLogRoute = require("./routes/fcmLog");
 const notificationRouter = require("./routes/notification");
 const admin = require("firebase-admin");
 
@@ -35,6 +36,7 @@ app.use("/api/brands", brandsRoute);
 app.use("/api/stats", statsRoute);
 app.use("/api/rating", ratingRoute);
 app.use("/api/user", userRoute);
+app.use("/api/fcmLog", fcmLogRoute);
 app.use("/api/notification", notificationRouter);
 
 app.get("/", (req, res) => {
