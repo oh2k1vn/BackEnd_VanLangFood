@@ -6,7 +6,7 @@ const router = require("express").Router();
 
 router.post("/shop", isShopAdmin, async (req, res) => {
   try {
-    let stats = {};
+    let stats = [];
     if (req.body.startTime && req.body.endTime) {
       const startTime = new Date(req.body.startTime);
       const endTime = new Date(req.body.endTime);
@@ -42,7 +42,9 @@ router.post("/shop", isShopAdmin, async (req, res) => {
       ]);
 
       const totalProduct = await Product.countDocuments({ shop: shopId });
-      stats[0].totalProduct = totalProduct;
+      if (totalProduct && stats[0]?._id) {
+        stats[0].totalProduct = totalProduct;
+      }
 
     }
     res.status(200).send({
